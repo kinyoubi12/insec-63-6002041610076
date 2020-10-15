@@ -1,18 +1,18 @@
 <?php
 
-namespace backend\models;
+namespace backend\controllers;
 
 use Yii;
-use backend\models\AuthItemChild;
-use backend\models\AuthItemChildSearch;
+use backend\models\AuthRule;
+use backend\models\AuthRuleSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * AuthItemChildController implements the CRUD actions for AuthItemChild model.
+ * AuthRuleController implements the CRUD actions for AuthRule model.
  */
-class AuthItemChildController extends Controller
+class AuthRuleController extends Controller
 {
     /**
      * {@inheritdoc}
@@ -30,12 +30,12 @@ class AuthItemChildController extends Controller
     }
 
     /**
-     * Lists all AuthItemChild models.
+     * Lists all AuthRule models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new AuthItemChildSearch();
+        $searchModel = new AuthRuleSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -45,30 +45,29 @@ class AuthItemChildController extends Controller
     }
 
     /**
-     * Displays a single AuthItemChild model.
-     * @param string $parent
-     * @param string $child
+     * Displays a single AuthRule model.
+     * @param string $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($parent, $child)
+    public function actionView($id)
     {
         return $this->render('view', [
-            'model' => $this->findModel($parent, $child),
+            'model' => $this->findModel($id),
         ]);
     }
 
     /**
-     * Creates a new AuthItemChild model.
+     * Creates a new AuthRule model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new AuthItemChild();
+        $model = new AuthRule();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'parent' => $model->parent, 'child' => $model->child]);
+            return $this->redirect(['view', 'id' => $model->name]);
         }
 
         return $this->render('create', [
@@ -77,19 +76,18 @@ class AuthItemChildController extends Controller
     }
 
     /**
-     * Updates an existing AuthItemChild model.
+     * Updates an existing AuthRule model.
      * If update is successful, the browser will be redirected to the 'view' page.
-     * @param string $parent
-     * @param string $child
+     * @param string $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($parent, $child)
+    public function actionUpdate($id)
     {
-        $model = $this->findModel($parent, $child);
+        $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'parent' => $model->parent, 'child' => $model->child]);
+            return $this->redirect(['view', 'id' => $model->name]);
         }
 
         return $this->render('update', [
@@ -98,31 +96,29 @@ class AuthItemChildController extends Controller
     }
 
     /**
-     * Deletes an existing AuthItemChild model.
+     * Deletes an existing AuthRule model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param string $parent
-     * @param string $child
+     * @param string $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionDelete($parent, $child)
+    public function actionDelete($id)
     {
-        $this->findModel($parent, $child)->delete();
+        $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
     }
 
     /**
-     * Finds the AuthItemChild model based on its primary key value.
+     * Finds the AuthRule model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param string $parent
-     * @param string $child
-     * @return AuthItemChild the loaded model
+     * @param string $id
+     * @return AuthRule the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($parent, $child)
+    protected function findModel($id)
     {
-        if (($model = AuthItemChild::findOne(['parent' => $parent, 'child' => $child])) !== null) {
+        if (($model = AuthRule::findOne($id)) !== null) {
             return $model;
         }
 
